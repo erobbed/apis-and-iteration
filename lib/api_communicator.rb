@@ -23,14 +23,20 @@ def get_character_movies_from_api(character)
 end
 
 def find_character(character)
-  all_characters = RestClient.get('http://www.swapi.co/api/people/')
-  character_hash = JSON.parse(all_characters)
-  #searches character_hash of all characters
-  #if input matches character's name, return hash of character data
-  character_hash["results"].each do |person|
-    if person["name"].downcase == character.downcase
-      return person
+  page_num = 1
+  loop do
+    page_characters = RestClient.get('http://www.swapi.co/api/people/?page=' + page_num.to_s)
+    character_hash = JSON.parse(page_characters)
+    #searches character_hash of all characters
+    #if input matches character's name, return hash of character data
+    character_hash["results"].each do |person|
+      if person["name"].downcase == character.downcase
+        return person
+      end
     end
+    page_num += 1
+    #binding.pry
+    break if (character_hash["next"] == nil)
   end
 end
 
