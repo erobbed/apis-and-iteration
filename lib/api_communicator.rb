@@ -61,6 +61,35 @@ def show_character_movies(character)
   parse_character_movies(films_hash)
 end
 
+def get_movie_info_from_api(film)
+  film_hash = find_film(film)
+end
+
+def find_film(film)
+  page_films = RestClient.get('http://www.swapi.co/api/films/')
+  movie_hash = JSON.parse(page_films)
+  #searches character_hash of all characters
+  #if input matches character's name, return hash of character data
+  movie_hash["results"].each do |movie|
+    if movie["title"].downcase == film.downcase
+      return movie
+    end
+    #binding.pry
+  end
+end
+
+def parse_movies(film_hash)
+  film_hash.each do |key, value|
+    puts "#{key}: #{value}"
+  end
+  # some iteration magic and puts out the movies in a nice list
+end
+
+def show_movies(film)
+  film_hash = get_movie_info_from_api(film)
+  parse_movies(film_hash)
+end
+
 ## BONUS
 
 # that `get_character_movies_from_api` method is probably pretty long. Does it do more than one job?
