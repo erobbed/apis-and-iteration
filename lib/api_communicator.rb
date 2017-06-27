@@ -42,10 +42,10 @@ def film_info(person_hash)
 end
 
 def parse_character_movies(films_hash)
+  n = 1
   films_hash.each do |film|
-    film.each do |key, value|
-      puts "#{key}: #{value}"
-    end
+    puts "#{n}. #{film["title"]}"
+    n += 1
   end
   # some iteration magic and puts out the movies in a nice list
 end
